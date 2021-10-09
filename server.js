@@ -8,6 +8,7 @@ const app = express();
 
 //load the quotes JSON
 const quotes = require("./quotes.json");
+const lodash = require("lodash");
 
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
@@ -18,6 +19,37 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
+const getAllQuotesFnc = (req, res) => {
+  res.send(quotes);
+};
+const getOneQuoteFnc = (req, res) => {
+  res.send(lodash.sample(quotes));
+};
+
+//`/quotes/search?term=life`
+//bonus: make your search case-insensitive
+
+const withParameterTermWord = (req, res) => {
+  const search_term = req.query.term;
+  if (search_term != null) {
+    const search = quotes.filter(
+      (q) =>
+        q.quote.toLowerCase().includes(search_term.toLowerCase()) ||
+        q.author.toLowerCase().includes(search_term.toLowerCase())
+    );
+    res.send(search);
+  } else {
+    res.end;
+  }
+};
+
+app.get("/quotes", getAllQuotesFnc);
+app.get("/quotes/random", getOneQuoteFnc);
+app.get("/quotes/search", withParameterTermWord);
+//app.get("/quotes/search", withParameterTermAuthor);
+app.get("/one", function (req, res) {
+  res.send("You asked for route /one");
+});
 
 //...END OF YOUR CODE
 
@@ -32,6 +64,6 @@ function pickFromArray(arr) {
 //Start our server so that it listens for HTTP requests!
 let port = 5000;
 
-app.listen( port, function () {
+app.listen(port, function () {
   console.log("Your app is listening on port " + port);
 });
