@@ -1,4 +1,5 @@
 const { response } = require("express");
+const cors = require("cors");
 // server.js
 // This is where your node app starts
 
@@ -42,6 +43,11 @@ const withParameterTermWord = (req, res) => {
     res.end;
   }
 };
+
+app.use(cors());
+app.get("/", function (req, res) {
+  res.send("{msg: 'This is CORS-enabled for all origins!'}");
+});
 
 app.get("/quotes", getAllQuotesFnc);
 app.get("/quotes/random", getOneQuoteFnc);
