@@ -1,7 +1,6 @@
+// PACKAGE
 const { response } = require("express");
 const cors = require("cors");
-// server.js
-// This is where your node app starts
 
 //load the 'express' module which makes writing webservers easy
 const express = require("express");
@@ -11,10 +10,6 @@ const app = express();
 const quotes = require("./quotes.json");
 const lodash = require("lodash");
 
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
 app.get("/", function (request, response) {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
@@ -43,7 +38,19 @@ const withParameterTermWord = (req, res) => {
     res.end;
   }
 };
+// const getQuotesByIdFunction = (req, res) => {
+//   const quoteId = parseInt(req.params.id);
+//   console.log(quoteId);
+//   const quote = quotesWithId.find((q) => q.id === quoteId);
 
+//   if (quote) {
+//     res.send(quote);
+//   } else {
+//     res.status(404).send("Not Exits");
+//   }
+// };
+
+// app.get("/quotes/:id", getQuotesByIdFunction);
 app.use(cors());
 app.get("/", function (req, res) {
   res.send("{msg: 'This is CORS-enabled for all origins!'}");
@@ -52,7 +59,6 @@ app.get("/", function (req, res) {
 app.get("/quotes", getAllQuotesFnc);
 app.get("/quotes/random", getOneQuoteFnc);
 app.get("/quotes/search", withParameterTermWord);
-//app.get("/quotes/search", withParameterTermAuthor);
 app.get("/one", function (req, res) {
   res.send("You asked for route /one");
 });
